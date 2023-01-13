@@ -19,6 +19,12 @@ This is **ONLY** compatible with C++20 and later since it's using the new module
 
 and more coming later...
 
+## Installation
+Clone the reporitory in the same folder as your Visual Studio Solution and import the project from inside Visual Studio.
+To use the library, add FLib as a reference to your project.
+
+**Any other installation method or build type is not supported.**
+
 ## Usage
 
 You can check the following example(s):
