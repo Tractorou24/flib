@@ -85,8 +85,6 @@ namespace flib
         : Button(position, size, background_color, outline_color, outline_thickness), m_text(text)
     {
         setTextPosition();
-        m_shape.setOutlineColor(sf::Color::White);
-        m_shape.setOutlineThickness(2);
     }
 
     void TextButton::draw(sf::RenderTarget& target, const sf::RenderStates states) const
