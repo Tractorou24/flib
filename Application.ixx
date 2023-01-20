@@ -29,13 +29,8 @@ namespace flib
         void setActiveScene(const std::shared_ptr<Scene>&);
         void setActiveScene(const int& index);
 
-        // ReSharper disable once CppMemberFunctionMayBeConst
         [[nodiscard]] const std::shared_ptr<Scene>& activeScene() { return m_activeScene; }
         [[nodiscard]] sf::RenderWindow& window() { return m_renderWindow; }
-
-    public:
-        sling::Signal<sf::Event> onEvent;
-        sling::Signal<> onDraw;
 
     private:
         sf::RenderWindow m_renderWindow;
@@ -51,7 +46,7 @@ namespace flib
 {
     Application::Application(const sf::VideoMode mode, const sf::String& title, const sf::Uint32 style,
                              const sf::ContextSettings& settings)
-        : m_renderWindow(mode, title, style, settings) {}
+        : m_renderWindow(mode, title, style, settings) { }
 
     void Application::run()
     {
@@ -67,13 +62,13 @@ namespace flib
                 }
                 if (event.type == sf::Event::MouseButtonPressed)
                     Button::HandleButtons(sf::Mouse::getPosition(m_renderWindow));
-                onEvent.emit(event);
+                m_activeScene->onEvent.emit(event);
             }
 
             m_renderWindow.clear();
             if (m_activeScene)
                 m_renderWindow.draw(*m_activeScene);
-            onDraw.emit();
+            m_activeScene->onDraw.emit();
             m_renderWindow.display();
         }
     }
@@ -100,7 +95,6 @@ namespace flib
         m_activeScene = scene;
     }
 
-    // ReSharper disable once CppMemberFunctionMayBeConst
     void Application::setActiveScene(const int& index)
     {
         if (index < 0 || index >= m_scenes.size())

@@ -35,5 +35,8 @@
     <ClCompile Include="Application.ixx">
       <Filter>Modules Files</Filter>
     </ClCompile>
+    <ClCompile Include="Layer.ixx">
+      <Filter>Modules Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
