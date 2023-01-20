@@ -68,7 +68,7 @@ namespace flib
 
     private:
         std::shared_ptr<sf::Texture> m_texture;
-        std::shared_ptr<sf::Sprite> m_sprite;
+        std::unique_ptr<sf::Sprite> m_sprite;
     };
 }
 
@@ -79,13 +79,13 @@ namespace flib
     DrawableImage::DrawableImage(const std::string& file_path)
     {
         m_texture->loadFromFile(file_path);
-        m_sprite = std::make_shared<sf::Sprite>(*m_texture);
+        m_sprite = std::make_unique<sf::Sprite>(*m_texture);
     }
 
     DrawableImage::DrawableImage(const std::shared_ptr<sf::Texture>& texture)
         : m_texture(texture)
     {
-        m_sprite = std::make_shared<sf::Sprite>(*m_texture);
+        m_sprite = std::make_unique<sf::Sprite>(*m_texture);
     }
 
     void DrawableImage::draw(sf::RenderTarget& target, sf::RenderStates) const
