@@ -12,31 +12,37 @@
     <Filter Include="External">
       <UniqueIdentifier>{132a9511-c0a2-4355-995a-f3a01d10b28e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules Files\Core">
+      <UniqueIdentifier>{814666dc-2bd3-4945-9224-c235c09bda0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules Files\Widgets">
+      <UniqueIdentifier>{2445eb02-fb62-4c47-a588-61994b54f811}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Button.ixx">
-      <Filter>Modules Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextButton.ixx">
-      <Filter>Modules Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageBox.ixx">
-      <Filter>Modules Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawableImage.ixx">
-      <Filter>Modules Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.ixx">
-      <Filter>Modules Files</Filter>
-    </ClCompile>
     <ClCompile Include="Sling.ixx">
       <Filter>External</Filter>
     </ClCompile>
     <ClCompile Include="Application.ixx">
-      <Filter>Modules Files</Filter>
+      <Filter>Modules Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="Layer.ixx">
-      <Filter>Modules Files</Filter>
+      <Filter>Modules Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.ixx">
+      <Filter>Modules Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="TextButton.ixx">
+      <Filter>Modules Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageBox.ixx">
+      <Filter>Modules Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawableImage.ixx">
+      <Filter>Modules Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.ixx">
+      <Filter>Modules Files\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

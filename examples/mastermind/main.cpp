@@ -6,6 +6,7 @@ import FLib.Application;
 import FLib.Button;
 import FLib.TextButton;
 import FLib.MessageBox;
+import FLib.Layer;
 import FLib.Scene;
 import Sling;
 
@@ -35,6 +36,8 @@ int main()
     order_button_text.setFillColor(sf::Color::White);
     const auto order_button = std::make_shared<flib::TextButton>(sf::Vector2f(430, 440), sf::Vector2f(200, 30),
                                                                  order_button_text);
+    order_button->setOutlineColor(sf::Color::White);
+    order_button->setOutlineThickness(2);
     order_button->onClick.connect(sling::Slot<flib::Button*>([&](flib::Button*)
     {
         // Update tries number
@@ -51,26 +54,36 @@ int main()
         if (local_win || remainingTries < 1)
         {
             flib::MessageBox msg(font);
-            msg.addButton("Restart").onClick.connect(sling::Slot<flib::Button*>([&](flib::Button*)
+            msg.setTitle(local_win ? "Win!" : "Loose!");
+            msg.setMessage(local_win ? "You win!" : "You lose!");
+            auto& restart_btn = msg.addButton("Restart");
+            restart_btn.setOutlineColor(sf::Color::White);
+            restart_btn.setOutlineThickness(2);
+            restart_btn.onClick.connect(sling::Slot<flib::Button*>([&](flib::Button*)
             {
                 mastermind::restart(win_colors, tries_text, remainingTries);
                 msg.hide();
             }));
-            msg.addButton("Quit").onClick.connect(sling::Slot<flib::Button*>([&](flib::Button*)
+
+            auto& quit_btn = msg.addButton("Quit");
+            quit_btn.setOutlineColor(sf::Color::White);
+            quit_btn.setOutlineThickness(2);
+            quit_btn.onClick.connect(sling::Slot<flib::Button*>([&](flib::Button*)
             {
                 msg.hide();
                 app.close();
             }));
-            msg.setTitle(local_win ? "Win!" : "Loose!");
-            msg.setMessage(local_win ? "You win!" : "You lose!");
+            msg.show(app);
         }
     }));
 
-    std::shared_ptr<flib::Scene> scene = std::make_shared<flib::Scene>();
-    std::ranges::for_each(ui_elements, [&scene](const auto& element) { scene->addObject(element); });
-    std::ranges::for_each(buttons, [&scene](auto& button) { scene->addObject(button); });
-    scene->addObject(order_button);
+    const auto scene = std::make_shared<flib::Scene>();
+    const auto layer = std::make_shared<flib::Layer>();
+    std::ranges::for_each(ui_elements, [&layer](const auto& element) { layer->addDrawable(element); });
+    std::ranges::for_each(buttons, [&layer](auto& button) { layer->addDrawable(button); });
+    layer->addDrawable(order_button);
 
+    scene->addLayer("base", layer);
     app.addScene(scene);
     app.setActiveScene(0);
     app.run();
