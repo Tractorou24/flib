@@ -44,6 +44,11 @@ namespace flib
         const sf::Vector2f& scale() const noexcept { return m_sprite->getScale(); }
 
         /**
+         * \return The global bounding rectangle of the image
+         */
+        sf::FloatRect globalBounds() const noexcept { return m_sprite->getGlobalBounds(); }
+
+        /**
          * \return The underlying SFML texture
          */
         const sf::Texture& texture() const noexcept { return *m_sprite->getTexture(); }
