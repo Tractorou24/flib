@@ -8,6 +8,12 @@ import <vector>;
 
 namespace flib
 {
+    template <typename T>
+    concept HasGlobalBounds = requires(T t)
+    {
+        { t.globalBounds() };
+    };
+
     export class Layer final : sf::Drawable
     {
     public:
@@ -21,6 +27,19 @@ namespace flib
         template <typename T>
         std::shared_ptr<T> getDrawable(const std::size_t& index) const { return std::dynamic_pointer_cast<T>(m_drawables[index]); }
         // @formatter:on
+
+        template <typename T>
+        std::shared_ptr<T> getDrawableAtPosition(const sf::Vector2f& position) const requires HasGlobalBounds<T>
+        {
+            const auto it = std::ranges::find_if(m_drawables, [&position](auto& drawable)
+            {
+                return std::dynamic_pointer_cast<T>(drawable)->globalBounds().contains(position);
+            });
+
+            if (it != m_drawables.end())
+                return std::dynamic_pointer_cast<T>(*it);
+            return nullptr;
+        }
 
         std::vector<std::shared_ptr<sf::Drawable>> getDrawables() { return m_drawables; }
 
