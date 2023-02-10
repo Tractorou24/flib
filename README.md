@@ -29,3 +29,4 @@ To use the library, add FLib as a reference to your project.
 
 You can check the following example(s):
 - [MasterMind](examples/mastermind)
+- [Sokoban](examples/sokoban)
