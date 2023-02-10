@@ -45,7 +45,7 @@ namespace mastermind
     }
 
     template <std::size_t Nb>
-    std::vector<std::shared_ptr<flib::Button>> get_buttons(sling::Slot<flib::Button*> slot)
+    std::vector<std::shared_ptr<flib::Button>> get_buttons()
     {
         const static std::array<sf::Color, Nb> colors = {
             sf::Color::Blue, sf::Color::Yellow, sf::Color::Green, sf::Color::Magenta
@@ -58,7 +58,6 @@ namespace mastermind
             buttons.emplace_back(std::make_shared<flib::Button>(sf::Vector2f(static_cast<float>(50 + i * 140), 100),
                                                                 sf::Vector2f(125, 300),
                                                                 colors[i]));
-            buttons.back()->onClick.connect(slot);
         }
         return buttons;
     }
