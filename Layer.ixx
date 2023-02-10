@@ -24,9 +24,9 @@ namespace flib
         ~Layer() override;
 
         template <typename T>
-        void addDrawable(const std::shared_ptr<T>& obj) { m_drawables.push_back(obj); }
+        void addDrawable(const std::shared_ptr<T> obj) { m_drawables.push_back(std::move(obj)); }
 
-        void removeDrawable(const std::shared_ptr<sf::Drawable>& obj);
+        void removeDrawable(const std::shared_ptr<sf::Drawable> obj);
 
         void handleButtons(const sf::Vector2i& mouse_position) const;
 
@@ -68,16 +68,16 @@ namespace flib
     }
 
     template <>
-    void Layer::addDrawable<Button>(const std::shared_ptr<Button>& obj)
+    void Layer::addDrawable<Button>(const std::shared_ptr<Button> obj)
     {
         m_buttons.push_back(obj);
         m_drawables.push_back(obj);
     }
 
     template <>
-    void Layer::addDrawable<TextButton>(const std::shared_ptr<TextButton>& obj)
+    void Layer::addDrawable<TextButton>(const std::shared_ptr<TextButton> obj)
     {
-        addDrawable<Button>(obj);
+        addDrawable<Button>(std::move(obj));
     }
 
     template <typename T>
@@ -86,9 +86,9 @@ namespace flib
         return std::dynamic_pointer_cast<T>(m_drawables[index]);
     }
 
-    void Layer::removeDrawable(const std::shared_ptr<sf::Drawable>& obj)
+    void Layer::removeDrawable(const std::shared_ptr<sf::Drawable> obj)
     {
-        m_drawables.erase(std::remove(m_drawables.begin(), m_drawables.end(), obj));
+        m_drawables.erase(std::remove(m_drawables.begin(), m_drawables.end(), std::move(obj)));
     }
 
     void Layer::handleButtons(const sf::Vector2i& mouse_position) const

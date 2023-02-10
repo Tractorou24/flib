@@ -23,7 +23,7 @@ namespace flib
         Scene& operator=(const Scene& other) = delete;
         Scene& operator=(Scene&& other) noexcept = delete;
 
-        void addLayer(const std::string& name, const std::shared_ptr<Layer>& obj);
+        void addLayer(const std::string& name, const std::shared_ptr<Layer> obj);
         void removeLayer(const std::string& name);
 
         void handleButtons(const sf::Vector2i& mouse_position) const;
@@ -46,9 +46,9 @@ module: private;
 
 namespace flib
 {
-    void Scene::addLayer(const std::string& name, const std::shared_ptr<Layer>& obj)
+    void Scene::addLayer(const std::string& name, const std::shared_ptr<Layer> obj)
     {
-        m_layers.insert_or_assign(name, obj);
+        m_layers.insert_or_assign(name, std::move(obj));
     }
 
     void Scene::removeLayer(const std::string& name)

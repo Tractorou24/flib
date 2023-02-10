@@ -23,7 +23,7 @@ namespace flib
          * \brief Creates a drawable image from a texture loaded in memory
          * \param texture A shared pointer to the texture to use
          */
-        explicit DrawableImage(const std::shared_ptr<sf::Texture>& texture);
+        explicit DrawableImage(const std::shared_ptr<sf::Texture> texture);
         ~DrawableImage() override = default;
 
         /**
@@ -87,7 +87,7 @@ namespace flib
         m_sprite = std::make_unique<sf::Sprite>(*m_texture);
     }
 
-    DrawableImage::DrawableImage(const std::shared_ptr<sf::Texture>& texture)
+    DrawableImage::DrawableImage(const std::shared_ptr<sf::Texture> texture)
         : m_texture(texture)
     {
         m_sprite = std::make_unique<sf::Sprite>(*m_texture);

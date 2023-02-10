@@ -23,12 +23,12 @@ namespace flib
         void run();
         void close();
 
-        void addScene(const std::string& name, const std::shared_ptr<Scene>&);
+        void addScene(const std::string& name, std::shared_ptr<Scene>);
         void removeScene(const std::string& name);
 
         void setActiveScene(const std::string& name);
 
-        [[nodiscard]] const std::shared_ptr<Scene>& activeScene() { return m_activeScene; }
+        [[nodiscard]] std::shared_ptr<Scene> activeScene() { return m_activeScene; }
         [[nodiscard]] sf::RenderWindow& window() { return m_renderWindow; }
         [[nodiscard]] sf::Font& font() { return m_font; }
 
@@ -82,9 +82,9 @@ namespace flib
         m_renderWindow.close();
     }
 
-    void Application::addScene(const std::string& name, const std::shared_ptr<Scene>& scene)
+    void Application::addScene(const std::string& name, std::shared_ptr<Scene> scene)
     {
-        m_scenes.insert_or_assign(name, scene);
+        m_scenes.insert_or_assign(name, std::move(scene));
     }
 
     void Application::removeScene(const std::string& name)
