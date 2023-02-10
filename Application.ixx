@@ -23,19 +23,20 @@ namespace flib
         void run();
         void close();
 
-        void addScene(const std::shared_ptr<Scene>&);
-        void removeScene(const std::shared_ptr<Scene>&);
+        void addScene(const std::string& name, const std::shared_ptr<Scene>&);
+        void removeScene(const std::string& name);
 
-        void setActiveScene(const std::shared_ptr<Scene>&);
-        void setActiveScene(const int& index);
+        void setActiveScene(const std::string& name);
 
         [[nodiscard]] const std::shared_ptr<Scene>& activeScene() { return m_activeScene; }
         [[nodiscard]] sf::RenderWindow& window() { return m_renderWindow; }
+        [[nodiscard]] sf::Font& font() { return m_font; }
 
     private:
         sf::RenderWindow m_renderWindow;
+        sf::Font m_font;
 
-        std::vector<std::shared_ptr<Scene>> m_scenes;
+        std::unordered_map<std::string, std::shared_ptr<Scene>> m_scenes;
         std::shared_ptr<Scene> m_activeScene;
     };
 }
@@ -46,7 +47,10 @@ namespace flib
 {
     Application::Application(const sf::VideoMode mode, const sf::String& title, const sf::Uint32 style,
                              const sf::ContextSettings& settings)
-        : m_renderWindow(mode, title, style, settings) { }
+        : m_renderWindow(mode, title, style, settings)
+    {
+        m_font.loadFromFile("C:\\Windows\\Fonts\\arial.ttf");
+    }
 
     void Application::run()
     {
@@ -61,7 +65,7 @@ namespace flib
                     return;
                 }
                 if (event.type == sf::Event::MouseButtonPressed)
-                    Button::HandleButtons(sf::Mouse::getPosition(m_renderWindow));
+                    m_activeScene->handleButtons(sf::Mouse::getPosition(m_renderWindow));
                 m_activeScene->onEvent.emit(event);
             }
 
@@ -78,27 +82,20 @@ namespace flib
         m_renderWindow.close();
     }
 
-    void Application::addScene(const std::shared_ptr<Scene>& scene)
+    void Application::addScene(const std::string& name, const std::shared_ptr<Scene>& scene)
     {
-        m_scenes.push_back(scene);
+        m_scenes.insert_or_assign(name, scene);
     }
 
-    void Application::removeScene(const std::shared_ptr<Scene>& scene)
+    void Application::removeScene(const std::string& name)
     {
-        m_scenes.erase(std::remove(m_scenes.begin(), m_scenes.end(), scene));
+        m_scenes.erase(name);
     }
 
-    void Application::setActiveScene(const std::shared_ptr<Scene>& scene)
+    void Application::setActiveScene(const std::string& name)
     {
-        if (std::ranges::find(m_scenes, scene) == m_scenes.end())
+        if (!m_scenes.contains(name))
             throw std::runtime_error("Scene is not added in the application !");
-        m_activeScene = scene;
-    }
-
-    void Application::setActiveScene(const int& index)
-    {
-        if (index < 0 || index >= m_scenes.size())
-            throw std::runtime_error("Index out of range !");
-        m_activeScene = m_scenes[index];
+        m_activeScene = m_scenes[name];
     }
 }
