@@ -3,6 +3,8 @@
 import <SFML/Graphics/Drawable.hpp>;
 import <SFML/Graphics/RenderWindow.hpp>;
 
+import <memory>;
+import <ranges>;
 import <unordered_map>;
 import <vector>;
 
@@ -23,6 +25,8 @@ namespace flib
 
         void addLayer(const std::string& name, const std::shared_ptr<Layer>& obj);
         void removeLayer(const std::string& name);
+
+        void handleButtons(const sf::Vector2i& mouse_position) const;
 
         std::shared_ptr<Layer> getLayer(const std::string& name) { return m_layers.at(name); }
 
@@ -52,11 +56,17 @@ namespace flib
         m_layers.erase(name);
     }
 
+    void Scene::handleButtons(const sf::Vector2i& mouse_position) const
+    {
+        for (const auto layer : m_layers | std::views::values)
+            layer->handleButtons(mouse_position);
+    }
+
     void Scene::draw(sf::RenderTarget& target, const sf::RenderStates states) const
     {
         std::ranges::for_each(m_layers, [&](const auto& pair)
         {
-            target.draw(*reinterpret_cast<sf::Drawable*>(pair.second.get()), states);
+            target.draw(*std::reinterpret_pointer_cast<sf::Drawable>(pair.second), states);
         });
     }
 }

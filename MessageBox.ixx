@@ -24,7 +24,7 @@ namespace flib
         explicit MessageBox(const sf::Font& font);
         explicit MessageBox(const std::string& title, const sf::Text& message);
 
-        Button& addButton(const std::string& text);
+        std::shared_ptr<TextButton> addButton(const std::string& text);
         void removeButton(const std::string& text);
 
         void show(Application& app);
@@ -40,7 +40,7 @@ namespace flib
         sf::Font m_font;
         std::string m_title;
         sf::Text m_message;
-        std::vector<TextButton> m_buttons;
+        std::vector<std::shared_ptr<TextButton>> m_buttons;
 
         bool m_isShown = false;
     };
@@ -54,15 +54,17 @@ namespace flib
         : m_font(font) { }
 
     MessageBox::MessageBox(const std::string& title, const sf::Text& message)
-        : m_font(*m_message.getFont()), m_title(title), m_message(message) { }
+        : m_title(title), m_message(message)
+    {
+        m_font = *m_message.getFont();
+    }
 
-    Button& MessageBox::addButton(const std::string& text)
+    std::shared_ptr<TextButton> MessageBox::addButton(const std::string& text)
     {
         const auto button_text = sf::Text(text, m_font);
         const auto button_size = sf::Vector2f(button_text.getLocalBounds().width + 5,
                                               button_text.getLocalBounds().height + 10);
-        m_buttons.emplace_back(sf::Vector2f(0, 0), button_size, button_text);
-        m_buttons.back().onClick.emit(&m_buttons.back());
+        m_buttons.emplace_back(std::make_shared<TextButton>(sf::Vector2f(0, 0), button_size, button_text));
         return m_buttons.back();
     }
 
@@ -70,7 +72,7 @@ namespace flib
     {
         std::erase_if(m_buttons, [&text](const auto& button)
         {
-            return button.text().getString() == text;
+            return button->text().getString() == text;
         });
     }
 
@@ -89,15 +91,15 @@ namespace flib
         const float space_size = (window_size.x - std::accumulate(m_buttons.cbegin(), m_buttons.cend(), 0.f,
                                                                   [](float acc, const auto& button)
                                                                   {
-                                                                      return acc + button.size().x;
+                                                                      return acc + button->size().x;
                                                                   })) / (m_buttons.size() + 1);
 
         float next_pos = space_size;
         for (auto& button : m_buttons)
         {
-            const sf::FloatRect& button_size = button.text().getGlobalBounds();
+            const sf::FloatRect& button_size = button->text().getGlobalBounds();
             const float height = window_size.y / 2 - button_size.height / 2 + window_size.y / 6;
-            button.setPosition(sf::Vector2f(next_pos, height));
+            button->setPosition(sf::Vector2f(next_pos, height));
             next_pos += (button_size.width + space_size);
         }
 
@@ -107,21 +109,19 @@ namespace flib
             sf::Event event {};
             while (window.pollEvent(event))
             {
-                if (event.type == sf::Event::Closed)
-                    app.close();
                 if (event.type == sf::Event::MouseButtonPressed)
                 {
                     for (auto& button : m_buttons)
                     {
                         const auto mouse_pos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-                        if (button.shape().getGlobalBounds().contains(mouse_pos))
-                            button.onClick.emit(&button);
+                        if (button->shape().getGlobalBounds().contains(mouse_pos))
+                            button->onClick.emit(button);
                     }
                 }
             }
             window.draw(background);
             window.draw(m_message);
-            std::ranges::for_each(m_buttons, [&window](auto& button) { window.draw(button); });
+            std::ranges::for_each(m_buttons, [&window](auto& button) { window.draw(*button); });
             window.display();
         }
     }

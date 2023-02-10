@@ -23,13 +23,6 @@ namespace flib
     {
     public:
         /**
-         * \brief This handles all the buttons in the game and is called every frame to check if they are pressed or not
-         * \param mouse_position The mouse position when the user clicked
-         */
-        static void HandleButtons(const sf::Vector2i& mouse_position);
-
-    public:
-        /**
          * \brief Creates a new button
          * \param position The position in the scene in pixels from the top left corner of the scene
          * \param size The size of the button in pixels
@@ -40,7 +33,7 @@ namespace flib
         explicit Button(const sf::Vector2f& position, const sf::Vector2f& size,
                         const sf::Color& background_color = sf::Color::Transparent,
                         const sf::Color& outline_color = sf::Color::Transparent, const float& outline_thickness = 0.0f);
-        ~Button() override;
+        ~Button() override = default;
 
         Button(const Button& other) = delete;
         Button(Button&& other) noexcept;
@@ -84,6 +77,11 @@ namespace flib
          */
         [[nodiscard]] virtual float outlineThickness() const noexcept { return m_shape.getOutlineThickness(); }
 
+        /**
+         * \return The button current global bounds
+         */
+        [[nodiscard]] virtual sf::FloatRect globalBounds() const noexcept { return m_shape.getGlobalBounds(); }
+
 
         /**
          * \brief Moves the button to the new position
@@ -125,11 +123,10 @@ namespace flib
          *      button.onClick.connect(sling::Slot<Button*>([](Button* button) { std::cout << "Button clicked!" << std::endl; }));
          * \endcode
          */
-        sling::Signal<Button*> onClick;
+        sling::Signal<std::shared_ptr<Button>> onClick;
 
     protected:
         sf::RectangleShape m_shape;
-        static std::vector<Button*> s_buttons;
     };
 }
 
@@ -137,17 +134,6 @@ module: private;
 
 namespace flib
 {
-    std::vector<Button*> Button::s_buttons;
-
-    void Button::HandleButtons(const sf::Vector2i& mouse_position)
-    {
-        for (auto* button : s_buttons)
-        {
-            if (button->m_shape.getGlobalBounds().contains(static_cast<sf::Vector2f>(mouse_position)))
-                button->onClick.emit(button);
-        }
-    }
-
     Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color& background_color,
                    const sf::Color& outline_color, const float& outline_thickness)
     {
@@ -156,13 +142,6 @@ namespace flib
         m_shape.setFillColor(background_color);
         m_shape.setOutlineColor(outline_color);
         m_shape.setOutlineThickness(outline_thickness);
-
-        s_buttons.push_back(this);
-    }
-
-    Button::~Button()
-    {
-        std::erase(s_buttons, this);
     }
 
     Button::Button(Button&& other) noexcept
