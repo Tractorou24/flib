@@ -54,6 +54,7 @@ namespace flib
 
     void Application::run()
     {
+        sf::Clock deltaClock;
         while (m_renderWindow.isOpen())
         {
             sf::Event event = {};
@@ -72,7 +73,7 @@ namespace flib
             m_renderWindow.clear();
             if (m_activeScene)
                 m_renderWindow.draw(*m_activeScene);
-            m_activeScene->onDraw.emit();
+            m_activeScene->onDraw.emit(deltaClock.restart().asSeconds());
             m_renderWindow.display();
         }
     }

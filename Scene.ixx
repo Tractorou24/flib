@@ -32,7 +32,7 @@ namespace flib
 
     public:
         sling::Signal<sf::Event> onEvent;
-        sling::Signal<> onDraw;
+        sling::Signal<float> onDraw;
 
     protected:
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
