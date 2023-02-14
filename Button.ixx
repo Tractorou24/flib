@@ -41,13 +41,6 @@ namespace flib
         Button& operator=(Button&& other) noexcept;
 
         /**
-         * \brief Draws the buttons into the target
-         * \param target The target to draw the button into
-         * \param states The states used to render the button
-         */
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-        /**
          * \return The button current position in pixels from the top left corner of the scene
          */
         [[nodiscard]] virtual sf::Vector2f position() const noexcept { return m_shape.getPosition(); }
@@ -116,6 +109,14 @@ namespace flib
             m_shape.setOutlineThickness(new_thickness);
         }
 
+        /**
+         * \brief Draws the buttons into the target
+         * \param target The target to draw the button into
+         * \param states The states used to render the button
+         */
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    public:
         /**
          * \brief The signal emitted when the button is clicked
          * \code

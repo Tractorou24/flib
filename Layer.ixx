@@ -17,7 +17,7 @@ namespace flib
         { t.globalBounds() };
     };
 
-    export class Layer final : sf::Drawable
+    export class Layer final : public sf::Drawable
     {
     public:
         Layer() = default;
@@ -48,7 +48,6 @@ namespace flib
 
         std::vector<std::shared_ptr<sf::Drawable>> getDrawables() { return m_drawables; }
 
-    protected:
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:

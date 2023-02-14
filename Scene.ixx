@@ -30,12 +30,11 @@ namespace flib
 
         std::shared_ptr<Layer> getLayer(const std::string& name) { return m_layers.at(name); }
 
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     public:
         sling::Signal<sf::Event> onEvent;
         sling::Signal<float> onDraw;
-
-    protected:
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
         std::unordered_map<std::string, std::shared_ptr<Layer>> m_layers;

@@ -27,13 +27,6 @@ namespace flib
         ~DrawableImage() override = default;
 
         /**
-         * \brief Draws the buttons into the target
-         * \param target The target to draw the button into
-         * \param states The states used to render the button
-         */
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-        /**
          * \return The position of the image from the top left corner of the scene
          */
         const sf::Vector2f& position() const noexcept { return m_sprite->getPosition(); }
@@ -70,6 +63,14 @@ namespace flib
          * \param scale The new factor to scale the image to
          */
         void setScale(const sf::Vector2f& scale) noexcept { m_sprite->setScale(scale); }
+
+
+        /**
+         * \brief Draws the image into the target
+         * \param target The target to draw the image into
+         * \param states The states used to render the image
+         */
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
         std::shared_ptr<sf::Texture> m_texture;

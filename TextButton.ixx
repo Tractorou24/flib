@@ -33,13 +33,6 @@ namespace flib
                             const float& outline_thickness = 0.0f);
 
         /**
-         * \brief Draws the buttons into the target
-         * \param target The target to draw the button into
-         * \param states The states used to render the button
-         */
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-        /**
          * \return The text displayed in the button
          */
         [[nodiscard]] const sf::Text& text() const noexcept { return m_text; }
@@ -62,6 +55,13 @@ namespace flib
          * \param new_text The new text
          */
         void setText(const sf::Text& new_text) { m_text = new_text; }
+
+        /**
+         * \brief Draws the buttons into the target
+         * \param target The target to draw the button into
+         * \param states The states used to render the button
+         */
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
         /**

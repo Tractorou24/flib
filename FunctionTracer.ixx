@@ -12,7 +12,7 @@ namespace flib
     /**
      * @brief Draws a function on a render target
      */
-    export class FunctionTracer final : sf::Drawable
+    export class FunctionTracer final : public sf::Drawable
     {
     public:
         /**
@@ -68,7 +68,11 @@ namespace flib
          */
         void setColor(sf::Color color) { m_color = std::move(color); }
 
-    protected:
+        /**
+         * \brief Draws the function into the target
+         * \param target The target to draw the function into
+         * \param states The states used to render the function
+         */
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
