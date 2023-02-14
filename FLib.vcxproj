@@ -147,6 +147,7 @@
     <ClCompile Include="Application.ixx" />
     <ClCompile Include="Button.ixx" />
     <ClCompile Include="DrawableImage.ixx" />
+    <ClCompile Include="FunctionTracer.ixx" />
     <ClCompile Include="Layer.ixx" />
     <ClCompile Include="MessageBox.ixx" />
     <ClCompile Include="Scene.ixx" />
