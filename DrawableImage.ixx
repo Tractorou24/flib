@@ -59,6 +59,12 @@ namespace flib
         void setPosition(const sf::Vector2f& position) noexcept { m_sprite->setPosition(position); }
 
         /**
+         * \brief Rotates the image to the given angle
+         * \param angle The new rotation angle of the image in degrees
+         */
+        void setRotation(const float& angle) noexcept { m_sprite->setRotation(angle); }
+
+        /**
          * \brief Scales the image by the given factor
          * \param scale The new factor to scale the image to
          */
