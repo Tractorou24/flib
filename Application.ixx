@@ -32,6 +32,8 @@ namespace flib
         [[nodiscard]] sf::RenderWindow& window() { return m_renderWindow; }
         [[nodiscard]] sf::Font& font() { return m_font; }
 
+        [[nodiscard]] sf::Vector2f mousePosition() const;
+
     private:
         sf::RenderWindow m_renderWindow;
         sf::Font m_font;
@@ -98,5 +100,10 @@ namespace flib
         if (!m_scenes.contains(name))
             throw std::runtime_error("Scene is not added in the application !");
         m_activeScene = m_scenes[name];
+    }
+
+    sf::Vector2f Application::mousePosition() const
+    {
+        return static_cast<sf::Vector2f>(sf::Mouse::getPosition(m_renderWindow));
     }
 }
