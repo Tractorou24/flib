@@ -51,6 +51,11 @@ namespace flib
          */
         const sf::Sprite& sprite() const noexcept { return *m_sprite; }
 
+        /**
+         * \return The origin of the image
+         */
+        sf::Vector2f origin() const noexcept { return m_sprite->getOrigin(); }
+
 
         /**
          * \brief Moves the image to the given position
@@ -69,6 +74,12 @@ namespace flib
          * \param scale The new factor to scale the image to
          */
         void setScale(const sf::Vector2f& scale) noexcept { m_sprite->setScale(scale); }
+
+        /**
+         * \brief Sets the origin of the image
+         * \param origin The new origin of the image
+         */
+        void setOrigin(const sf::Vector2f& origin) noexcept { m_sprite->setOrigin(origin); }
 
 
         /**
