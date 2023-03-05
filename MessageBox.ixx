@@ -84,6 +84,11 @@ namespace flib
         background.setFillColor(sf::Color(0, 0, 0, 3));
 
         const sf::Vector2u& window_size = app.window().getSize();
+        auto title = sf::Text(m_title, m_font, 60);
+        const sf::FloatRect& title_size = title.getGlobalBounds();
+        title.setOrigin({title_size.width / 2, title_size.height / 2});
+        title.setPosition({background.getSize().x / 2, window_size.y / 10.0f});
+
         const sf::FloatRect& message_size = m_message.getGlobalBounds();
         m_message.setPosition(sf::Vector2f(window_size.x / 2 - message_size.width / 2,
                                            window_size.y / 2 - message_size.height / 2 - window_size.y / 6));
@@ -120,10 +125,12 @@ namespace flib
                 }
             }
             window.draw(background);
+            window.draw(title);
             window.draw(m_message);
             std::ranges::for_each(m_buttons, [&window](auto& button) { window.draw(*button); });
             window.display();
         }
+        window.clear();
     }
 
     void MessageBox::hide()
